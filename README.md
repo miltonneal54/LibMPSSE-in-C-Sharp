@@ -1,6 +1,5 @@
 # LibMPSSE-in-C-Sharp
 Wrapper Library for FTDI's  libMSSPE Version 1.0.5
-C# Wrapper class for FTDI's libMPSSE Library.
 
 FTDI's libMPSSE.dll allows interfacing with FT232H, FT2232H and FT4232H based modules.
 
