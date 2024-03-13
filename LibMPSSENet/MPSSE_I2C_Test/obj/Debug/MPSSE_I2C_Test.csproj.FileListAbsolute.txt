@@ -1,0 +1,11 @@
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\bin\Debug\MPSSE_I2C_Test.exe.config
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\bin\Debug\MPSSE_I2C_Test.exe
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\bin\Debug\MPSSE_I2C_Test.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\bin\Debug\LibMPSSENet.dll
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\bin\Debug\LibMPSSENet.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\bin\Debug\LibMPSSENet.xml
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\obj\Debug\MPSSE_I2C_Test.csproj.AssemblyReference.cache
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\obj\Debug\MPSSE_I2C_Test.csproj.CoreCompileInputs.cache
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\obj\Debug\MPSSE_I2C_Test.csproj.CopyComplete
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\obj\Debug\MPSSE_I2C_Test.exe
+C:\Users\Milton\source\repos\C#\LibMPSSENet\MPSSE_I2C_Test\obj\Debug\MPSSE_I2C_Test.pdb

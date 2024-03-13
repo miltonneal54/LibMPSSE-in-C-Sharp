@@ -1,0 +1,11 @@
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\bin\Debug\MPSEE_SPI_Test.exe.config
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\bin\Debug\MPSEE_SPI_Test.exe
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\bin\Debug\MPSEE_SPI_Test.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\bin\Debug\LibMPSSENet.dll
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\bin\Debug\LibMPSSENet.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\bin\Debug\LibMPSSENet.xml
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\obj\Debug\MPSEE_SPI_Test.csproj.AssemblyReference.cache
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\obj\Debug\MPSEE_SPI_Test.csproj.CoreCompileInputs.cache
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\obj\Debug\MPSEE_SPI_Test.csproj.CopyComplete
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\obj\Debug\MPSEE_SPI_Test.exe
+C:\Users\Milton\source\repos\C#\LibMPSSE_Net\MPSEE_SPI_Test\obj\Debug\MPSEE_SPI_Test.pdb

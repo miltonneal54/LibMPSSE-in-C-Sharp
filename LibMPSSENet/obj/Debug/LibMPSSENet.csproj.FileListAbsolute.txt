@@ -1,0 +1,7 @@
+C:\Users\Milton\source\repos\C#\LibMPSSENet\bin\Debug\LibMPSSENet.dll
+C:\Users\Milton\source\repos\C#\LibMPSSENet\bin\Debug\LibMPSSENet.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Debug\LibMPSSENet.csproj.AssemblyReference.cache
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Debug\LibMPSSENet.csproj.CoreCompileInputs.cache
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Debug\LibMPSSENet.dll
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Debug\LibMPSSENet.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSENet\bin\Debug\LibMPSSENet.xml

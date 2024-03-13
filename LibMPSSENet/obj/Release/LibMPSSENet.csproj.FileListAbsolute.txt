@@ -1,0 +1,6 @@
+C:\Users\Milton\source\repos\C#\LibMPSSENet\bin\Release\LibMPSSENet.dll
+C:\Users\Milton\source\repos\C#\LibMPSSENet\bin\Release\LibMPSSENet.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Release\LibMPSSENet.csproj.CoreCompileInputs.cache
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Release\LibMPSSENet.dll
+C:\Users\Milton\source\repos\C#\LibMPSSENet\obj\Release\LibMPSSENet.pdb
+C:\Users\Milton\source\repos\C#\LibMPSSENet\bin\Release\LibMPSSENet.xml
