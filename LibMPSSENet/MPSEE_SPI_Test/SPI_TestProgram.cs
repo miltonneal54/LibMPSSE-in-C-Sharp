@@ -12,15 +12,16 @@ namespace MPSSE_SPITest
     class SPITestProgram
     {
         // Program constants.
-        public const uint DeviceBufferSize = 128;
-        public const byte WriteRetries = 5;
-        public const byte Retries = 10;
-        public const byte SPI_Slave = 0;
-        public const byte DataOffset = 0x30;
+        public const uint deviceBufferSize = 256;
+        public const byte writeRetries = 5;
+        public const byte retries = 10;
+        public static byte dataOffset = 0xd0;
+        public const byte addressSize = 6;          // 6 for CAT93C46P :: 8 for CAT93C56P :: 7 for CAT93C57P, CAT35C102
+        public const byte commandSize = 9;          // 9 for CAT93C46P :: 11 for CAT93C56P :: 10 for CAT93C57P, CAT35C102
 
         // Global variables.
         public static MPSSE_SPI mpsse_spi = new MPSSE_SPI();
-        public static byte[] buffer = new byte[DeviceBufferSize];
+        public static byte[] buffer = new byte[deviceBufferSize];
         public static MPSSE.FT_STATUS status;
         public static uint channels = 0;
 
@@ -28,7 +29,7 @@ namespace MPSSE_SPITest
         {
             MPSSE_SPI.ChannelConfig channelConfig = new MPSSE_SPI.ChannelConfig();
             MPSSE.FT_DEVICE_INFO_NODE deviceInfo = new MPSSE.FT_DEVICE_INFO_NODE();
-            byte address;
+            ushort address;
             ushort data;
 
             try
@@ -78,7 +79,7 @@ namespace MPSSE_SPITest
 
             // Connect a LED to GPIO AC8 and Ground.
             // It will flash 10 tens at 250 msec intervals.
-            Console.WriteLine("Flashing LED, please wait....");
+            /*Console.WriteLine("Flashing LED, please wait....");
             for (int x = 0; x < 10; x++)
             {
                 mpsse_spi.FT_WriteGPIO(0xff, 0x7f);
@@ -87,23 +88,23 @@ namespace MPSSE_SPITest
                 System.Threading.Thread.Sleep(250);
             }
 
-            mpsse_spi.FT_WriteGPIO(0, 0);
+            mpsse_spi.FT_WriteGPIO(0, 0);*/
 
-            // Write 16 bytes to the EEPROM.
-            for (address = 0; address < 16; address++)
+            // Write 64 words to the EEPROM.
+            for (address = 0; address < 64; address++)
             {
-                Console.WriteLine("Writing Address: {0} Data: {1}", address, address + DataOffset);
-                status = WriteByte(SPI_Slave, address, (ushort)(address + DataOffset));
+                Console.WriteLine("Writing Address: {0} Data: {1}", address, address + dataOffset);
+                status = WriteByte(address, (ushort)(address + dataOffset));
             }
 
             Console.WriteLine("Write to EEPROM completed, press any key to start read.");
             _ = Console.ReadKey(true);
 
-            for (address = 0; address < 16; address++)
+            for (address = 0; address < 128; address++)
             {
                 data = 0;
 
-                status = ReadByte(SPI_Slave, address, ref data);
+                status = ReadByte(address, ref data);
                 Console.WriteLine("Reading Address: {0} Data: {1}", address, data);
             }
 
@@ -112,17 +113,14 @@ namespace MPSSE_SPITest
             _ = Console.ReadKey(true);
         }
 
-        static MPSSE.FT_STATUS WriteByte(byte slaveAddress, byte address, ushort data)
+        static MPSSE.FT_STATUS WriteByte(ushort address, ushort data)
         {
-            uint sizeToTransfer = 0;
-            uint sizeTransfered = 0;
-            int retry = 0;
-            bool state = true;
+            
 
-            // Write Enable Command.
+
             // Write command EWEN(with CS_High -> CS_Low).
-            sizeToTransfer = 9;
-            sizeTransfered = 0;
+            uint sizeToTransfer = commandSize;
+            uint sizeTransfered = 0;
             buffer[0] = 0x9f;   // EWEN command -> binary 10011xxxx (9bits).
             buffer[1] = 0xff;
             status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
@@ -130,19 +128,18 @@ namespace MPSSE_SPITest
                                          MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_ENABLE |
                                          MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_DISABLE);
 
-            // CS_High + Write command + Address.
-            sizeToTransfer = 1;
-            sizeTransfered = 0;
-            buffer[0] = 0xa0;                           // Write command (3bits).
-            buffer[0] |= (byte)((address >> 1) & 0x0f); // 5 most significant add bits.
-            status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
-                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BYTES |
-                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_ENABLE);
-
-            // Write 3 least sig address bits.
+            // CS_High + Write command.
             sizeToTransfer = 3;
             sizeTransfered = 0;
-            buffer[0] = (byte)((address & 0x07) << 7); // 3 least significant address bits.
+            buffer[0] = 0xa0;                           // Write command (3bits).
+            status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
+                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BITS |
+                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_ENABLE);
+
+            // Write address.
+            sizeToTransfer = addressSize;
+            sizeTransfered = 0;
+            buffer[0] = (byte)(address << (8 - addressSize));
             status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
                                          MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BITS);
 
@@ -165,8 +162,10 @@ namespace MPSSE_SPITest
 
             System.Threading.Thread.Sleep(10);
 
-            /*status = mpsse_spi.SPI_IsBusy(ref state);
-            while (state && (retry < WriteRetries))
+            /*int retry = 0;
+            bool state = true;
+            status = mpsse_spi.SPI_IsBusy(ref state);
+            while (state && (retry < writeRetries))
             {
                 Console.WriteLine("SPI device is busy({0})\n", retry);
                 status = mpsse_spi.SPI_IsBusy(ref state);
@@ -180,7 +179,7 @@ namespace MPSSE_SPITest
                                          MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_DISABLE);
             // Write Disable Command.
             // Write command EWDSN(with CS_High -> CS_Low).
-            sizeToTransfer = 9;
+            sizeToTransfer = commandSize;
             sizeTransfered = 0;
             buffer[0] = 0x87;   // EWDS Command -> binary 10000xxxx (9bits)
             buffer[1] = 0xff;
@@ -192,24 +191,30 @@ namespace MPSSE_SPITest
             return status;
         }
 
-        static MPSSE.FT_STATUS ReadByte(byte slaveAddress, byte address, ref ushort data)
+        static MPSSE.FT_STATUS ReadByte(ushort address, ref ushort data)
         {
             uint sizeToTransfer = 0;
             uint sizeTransfered;
 
-            // CS_High + Write command + Address.
-            sizeToTransfer = 1;
+            // CS_High + Read command.
+            sizeToTransfer = 3;
             sizeTransfered = 0;
             buffer[0] = 0xc0;   // Read command (3bits).
-            buffer[0] |= (byte)((address >> 1) & 0x0f);    /* 5 most significant add bits */
             status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
-                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BYTES |
-                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_ENABLE);
+                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BITS |
+                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_CHIPSELECT_ENABLE); ;
 
-            // Write partial address bits + dummy 0 bit.
-            sizeToTransfer = 4;
+            // Write address.
+            sizeToTransfer = addressSize;
             sizeTransfered = 0;
-            buffer[0] = (byte)((address & 0x07) << 7); // Least significant 1 address bit.
+            buffer[0] = (byte)(address << (8 - addressSize));
+            status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
+                                         MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BITS);
+
+            // Write dummy 0 bit.
+            sizeToTransfer = 1;
+            sizeTransfered = 0;
+            buffer[0] = 0;
             status = mpsse_spi.SPI_Write(buffer, sizeToTransfer, ref sizeTransfered,
                                          MPSSE_SPI.TransferOptions.SPI_TRANSFER_OPTIONS_SIZE_IN_BITS);
 
