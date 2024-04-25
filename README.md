@@ -22,8 +22,6 @@ Descrepancies:
 
 I did find some bugs in the original C source in AN177 and AN178 which I corrected when ported the code to C#.
 
-The schematic for connection to the I2C EEPROM in AN177 is incorrect. (Clock and DO/DI reversed)
-
 Prerequisites:
 
 The FTDI's driver FTD2xx must be installed on your system.
